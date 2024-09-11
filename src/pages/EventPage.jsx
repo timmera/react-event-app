@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading } from '@chakra-ui/react';
-
 import { useLoaderData, Link } from 'react-router-dom';
 
 export const loader = async ({ params }) => {

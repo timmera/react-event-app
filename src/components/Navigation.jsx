@@ -10,7 +10,7 @@ export const Navigation = () => {
           <Link to="/">Events</Link>
         </Tab>
         <Tab>
-          <Link to="/events/new">New Event</Link>
+          <Link to="/AddEvent">Add Event</Link>
         </Tab>
       </TabList>
     </Tabs>
