@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AddEvent } from './pages/AddEvent';
+import { loader as userLoaderForm } from './components/AddEventForm';
 import { EventPage, loader as eventLoader } from './pages/EventPage';
 import { EventsPage, loader as eventListLoader } from './pages/EventsPage';
 import { UserPage, loader as userLoader } from './pages/UserPage';
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       {
         path: '/AddEvent',
         element: <AddEvent />,
+        loader: userLoaderForm,
       },
       {
         path: '/Events/:eventId',
