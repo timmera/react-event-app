@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouteLoaderData, Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,65 +9,20 @@ import {
   Text,
   Stack,
   Spinner,
-  useToast,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-
-export const loader = async () => {
-  const events = await fetch('http://localhost:3000/events'); // Fetch events from API
-  const users = await fetch('http://localhost:3000/users'); // Fetch users from API
-  const categories = await fetch('http://localhost:3000/categories'); // Fetch categories from API
-
-  return {
-    events: await events.json(),
-    users: await users.json(),
-    categories: await categories.json(),
-  };
-};
 
 export const EventsPage = () => {
-  const toast = useToast();
-  const [events, setEvents] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const events = useRouteLoaderData('events');
+  const eventData = events.eventData;
+  const userData = events.userData;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [eventsResponse, categoriesResponse] = await Promise.all([
-          fetch('http://localhost:3000/events'),
-          fetch('http://localhost:3000/categories'),
-        ]);
-
-        if (!eventsResponse.ok || !categoriesResponse.ok) {
-          toast({
-            title: 'An error occurred.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-
-        const eventsData = await eventsResponse.json();
-        const categoriesData = await categoriesResponse.json();
-
-        setEvents(eventsData);
-        setCategories(categoriesData);
-      } catch (err) {
-        toast({
-          title: 'An error occurred.',
-          description: err.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (events) {
+      setLoading(false);
+    }
+  }, [events, eventData, userData]);
 
   if (loading) {
     return (
@@ -82,11 +38,10 @@ export const EventsPage = () => {
 
   return (
     <Stack spacing={4}>
-      {events.map((event) => {
-        const eventCategories = event.categoryIds.map((categoryId) =>
-          categories.find((category) => category.id === categoryId)
-        );
-
+      {eventData.map((event) => {
+        const eventCreator = userData?.find(
+          (user) => Number(user.id) === event.createdBy
+        )?.name;
         return (
           <Box key={event.id} align="center">
             <Card
@@ -99,10 +54,8 @@ export const EventsPage = () => {
               <Heading size="md">{event.title}</Heading>
               <Text>{event.description}</Text>
               <Text>Location: {event.location}</Text>
-              <Text>
-                Categories:{' '}
-                {eventCategories.map((category) => category?.name).join(', ')}
-              </Text>
+              <Text>Created by: {eventCreator ? eventCreator : 'Unknown'}</Text>
+
               <ButtonGroup spacing="2">
                 <Link to={`events/${event.id}`}>
                   <Button variant="solid" colorScheme="green">

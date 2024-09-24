@@ -25,9 +25,7 @@ export const ErrorBoundary = () => {
       <Alert status="error">
         <AlertIcon />
         <AlertTitle>Oops!</AlertTitle>
-        <AlertDescription>
-          An error occurred. Please try again later.
-        </AlertDescription>
+        <AlertDescription>{error.message}</AlertDescription>
       </Alert>
     );
   }

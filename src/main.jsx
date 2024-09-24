@@ -2,40 +2,50 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AddEvent } from './pages/AddEvent';
-import { loader as userLoaderForm } from './components/AddEventForm';
-import { EventPage, loader as eventLoader } from './pages/EventPage';
-import { EventsPage, loader as eventListLoader } from './pages/EventsPage';
-import { UserPage, loader as userLoader } from './pages/UserPage';
+import { EventPage } from './pages/EventPage';
+import { EventsPage } from './pages/EventsPage';
+import { UserPage } from './pages/UserPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Root } from './components/Root';
 import { ChakraProvider } from '@chakra-ui/react';
+import { fetchData } from './service/ApiService';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    loader: async () => {
+      const eventData = await fetchData(`/events/`);
+      const userData = await fetchData(`/users/`);
+      return { eventData, userData };
+    },
+    id: 'events',
     errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
         element: <EventsPage />,
-        loader: eventListLoader,
       },
       {
         path: '/AddEvent',
         element: <AddEvent />,
-        loader: userLoaderForm,
       },
       {
         path: '/Events/:eventId',
         element: <EventPage />,
-        loader: eventLoader,
+        loader: async ({ params }) => {
+          const event = await fetchData(`/events/${params.eventId}`);
+          const user = await fetchData(`/users/${event.createdBy}`);
+          return { event, user };
+        },
+        id: 'event',
         // action: addComment,
       },
       {
         path: '/Users/:userId',
         element: <UserPage />,
-        loader: userLoader,
+        loader: ({ params }) => fetchData(`/users/${params.userId}`),
+        id: 'user',
         // action: addComment,
       },
     ],

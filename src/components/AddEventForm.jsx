@@ -11,18 +11,11 @@ import {
   Heading,
   ButtonGroup,
 } from '@chakra-ui/react';
-import { useLoaderData } from 'react-router-dom';
-
-export const loader = async () => {
-  const users = await fetch('http://localhost:3000/users/'); // Fetch users from API
-
-  return {
-    users: await users.json(),
-  };
-};
+import { useRouteLoaderData } from 'react-router-dom';
 
 export const AddEventForm = ({ addEvent }) => {
-  const { users } = useLoaderData();
+  const events = useRouteLoaderData('events');
+  const users = events.userData;
   const [title, setTitle] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
   const [description, setDescription] = useState('');
@@ -32,7 +25,7 @@ export const AddEventForm = ({ addEvent }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newEvent = {
-      id: Date.now(), // unique ID
+      id: Date.now().toString(), // unique ID
       title,
       createdBy: selectedUser,
       description,

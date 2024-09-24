@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"json-server \"./src/json-server/events.json\" --port 3000\"",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -12,7 +12,9 @@
     "@chakra-ui/react": "^2.5.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "concurrently": "^9.0.1",
     "framer-motion": "^9.0.2",
+    "json-server": "^1.0.0-beta.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.1"

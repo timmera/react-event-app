@@ -1,18 +1,10 @@
 import React from 'react';
 import { Heading } from '@chakra-ui/react';
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 import { Image } from '@chakra-ui/react';
 
-export const loader = async ({ params }) => {
-  const user = await fetch(`http://localhost:3000/users/${params.userId}`); // Fetch users from API
-
-  return {
-    user: await user.json(),
-  };
-};
-
 export const UserPage = () => {
-  const { user } = useLoaderData();
+  const user = useRouteLoaderData('user');
   return (
     <>
       <div className="user-detail">
