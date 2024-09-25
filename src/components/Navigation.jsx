@@ -1,18 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Tabs, TabList, Tab } from '@chakra-ui/react';
+import { Flex, Heading, Button } from '@chakra-ui/react';
 
 export const Navigation = () => {
   return (
-    <Tabs>
-      <TabList>
-        <Tab>
-          <Link to="/">Events</Link>
-        </Tab>
-        <Tab>
-          <Link to="/AddEvent">Add Event</Link>
-        </Tab>
-      </TabList>
-    </Tabs>
+    <Flex
+      flexDirection="column"
+      alignItems="center"
+      mb="2rem"
+      gap="2rem"
+      textAlign="center"
+    >
+      <Heading>Eventlist</Heading>
+      <Flex flexDirection="row" gap="2rem">
+        <Link to="/">
+          <Button>All events</Button>
+        </Link>
+        <Link to="/AddEvent">
+          <Button>Add event</Button>
+        </Link>
+      </Flex>
+    </Flex>
   );
 };

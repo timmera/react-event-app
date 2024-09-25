@@ -1,72 +1,74 @@
-import React, { useEffect, useState } from 'react';
 import { useRouteLoaderData, Link } from 'react-router-dom';
 import {
+  Heading,
   Box,
+  Flex,
   Button,
   ButtonGroup,
-  Card,
-  Heading,
   Text,
-  Stack,
-  Spinner,
+  Spacer,
 } from '@chakra-ui/react';
+import { MdBuild, MdDelete, MdInfoOutline } from 'react-icons/md';
+import { useEffect, useState } from 'react';
+import { DeleteEvent } from '../components/DeleteEvent';
 
 export const EventsPage = () => {
-  const [loading, setLoading] = useState(false);
-
-  const events = useRouteLoaderData('events');
-  const eventData = events.eventData;
-  const userData = events.userData;
+  const data = useRouteLoaderData('events');
+  const [eventData, setEventData] = useState(data.eventData || []);
+  const [userData, setUserData] = useState(data.userData || []);
 
   useEffect(() => {
-    if (events) {
-      setLoading(false);
-    }
-  }, [events, eventData, userData]);
+    setEventData(data.eventData);
+    setUserData(data.userData);
+  }, [data.eventData]);
 
-  if (loading) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    );
-  }
+  console.log('render of page');
+  console.log('eventData:', eventData);
+  console.log('userData:', userData);
 
   return (
-    <Stack spacing={4}>
+    <>
       {eventData.map((event) => {
         const eventCreator = userData?.find(
           (user) => Number(user.id) === event.createdBy
         )?.name;
         return (
-          <Box key={event.id} align="center">
-            <Card
-              direction={{ base: 'column', sm: 'column' }}
-              overflow="hidden"
-              variant="outline"
-              mb="3"
-              maxW="80vw"
-            >
+          <Flex
+            minWidth="max-content"
+            alignItems="center"
+            gap="2"
+            key={event.id}
+          >
+            <Box p="2">
               <Heading size="md">{event.title}</Heading>
+              <Text>Added by: {eventCreator}</Text>
+              <Text>{event.date}</Text>
               <Text>{event.description}</Text>
-              <Text>Location: {event.location}</Text>
-              <Text>Created by: {eventCreator ? eventCreator : 'Unknown'}</Text>
-
-              <ButtonGroup spacing="2">
-                <Link to={`events/${event.id}`}>
-                  <Button variant="solid" colorScheme="green">
-                    View Event details
-                  </Button>
-                </Link>
-              </ButtonGroup>
-            </Card>
-          </Box>
+            </Box>
+            <Spacer />
+            <ButtonGroup gap="2">
+              <Link to={`events/${event.id}`}>
+                <Button
+                  leftIcon={<MdInfoOutline />}
+                  colorScheme="green"
+                  size="sm"
+                >
+                  Event Details
+                </Button>
+              </Link>
+              <Button
+                leftIcon={<MdBuild />}
+                colorScheme="blue"
+                size="sm"
+                variant="outline"
+              >
+                Edit Event
+              </Button>
+              <DeleteEvent event={event} />
+            </ButtonGroup>
+          </Flex>
         );
       })}
-    </Stack>
+    </>
   );
 };

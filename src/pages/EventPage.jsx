@@ -4,7 +4,7 @@ import { useRouteLoaderData, Link } from 'react-router-dom';
 
 export const EventPage = () => {
   const event = useRouteLoaderData('event');
-  console.log('event', event);
+  console.log('rendering Event:', event.event.id);
   return (
     <>
       <div className="event-detail">

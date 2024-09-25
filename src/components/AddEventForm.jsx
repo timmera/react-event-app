@@ -5,13 +5,16 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Flex,
-  Box,
-  Spacer,
-  Heading,
-  ButtonGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import { useRouteLoaderData } from 'react-router-dom';
+import { useRouteLoaderData, useNavigate } from 'react-router-dom';
 
 export const AddEventForm = ({ addEvent }) => {
   const events = useRouteLoaderData('events');
@@ -21,6 +24,9 @@ export const AddEventForm = ({ addEvent }) => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [categoryIds, setCategoryIds] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,76 +39,104 @@ export const AddEventForm = ({ addEvent }) => {
       categoryIds,
     };
     addEvent(newEvent);
+
+    toast({
+      title: 'Event has been added.',
+      description:
+        'Your event has been added successfully. You will be redirected to the events page.',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+    try {
+      navigate(`/`);
+    } catch (error) {
+      console.error('An error occurred while adding the event:', error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Flex minWidth="max-content" alignItems="center" gap="2" mt="1rem">
-        <Box p="2">
-          <Heading size="md">Add an Event</Heading>
-          <FormControl isRequired>
-            <FormLabel>Event Title</FormLabel>
-            <Input
-              placeholder="Event Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              isRequired
-            />
-            <FormLabel>Created By:</FormLabel>
-            <Select
-              placeholder="Select user"
-              value={selectedUser}
-              onChange={(e) => setSelectedUser(Number(e.target.value))}
-              isRequired
-            >
-              {users &&
-                users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-            </Select>
-            <FormLabel>Event Description:</FormLabel>
-            <Input
-              placeholder="Event Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              isRequired
-            />
-            <FormLabel>Event Location:</FormLabel>
-            <Input
-              placeholder="Event Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              isRequired
-            />
-            <FormLabel>Categories:</FormLabel>
-            <Select
-              name="categories"
-              multiple={true}
-              value={categoryIds}
-              onChange={(e) => {
-                const selectedOptions = Array.from(
-                  e.target.selectedOptions,
-                  (option) => Number(option.value) // Convert to number
-                );
-                setCategoryIds(selectedOptions);
-              }}
-              isRequired
-            >
-              <option value={1}>Sports</option>
-              <option value={2}>Games</option>
-              <option value={3}>Relaxation</option>
-            </Select>
-          </FormControl>
-        </Box>
-        <Spacer />
-        <ButtonGroup gap="2">
-          <Button type="submit" colorScheme="teal">
-            Add Event
-          </Button>
-        </ButtonGroup>
-      </Flex>
-    </form>
+    <>
+      <Button onClick={onOpen}>Open Modal</Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay
+          bg="blackAlpha.300"
+          backdropFilter="blur(10px) hue-rotate(90deg)"
+        />
+        <ModalContent>
+          <ModalHeader>Add an Event</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <form onSubmit={handleSubmit}>
+              <FormControl isRequired>
+                <FormLabel>Event Title</FormLabel>
+                <Input
+                  placeholder="Event Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  isRequired
+                />
+                <FormLabel>Created By:</FormLabel>
+                <Select
+                  placeholder="Select user"
+                  value={selectedUser}
+                  onChange={(e) => setSelectedUser(Number(e.target.value))}
+                  isRequired
+                >
+                  {users &&
+                    users.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.name}
+                      </option>
+                    ))}
+                </Select>
+                <FormLabel>Event Description:</FormLabel>
+                <Input
+                  placeholder="Event Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  isRequired
+                />
+                <FormLabel>Event Location:</FormLabel>
+                <Input
+                  placeholder="Event Location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  isRequired
+                />
+                <FormLabel>Categories:</FormLabel>
+                <Select
+                  name="categories"
+                  multiple={true}
+                  value={categoryIds}
+                  size={5}
+                  variant={'unstyled'}
+                  isRequired
+                  onChange={(e) => {
+                    const selectedOptions = Array.from(
+                      e.target.selectedOptions,
+                      (option) => Number(option.value) // Convert to number
+                    );
+                    setCategoryIds(selectedOptions);
+                  }}
+                >
+                  <option value={1}>Sports</option>
+                  <option value={2}>Games</option>
+                  <option value={3}>Relaxation</option>
+                </Select>
+
+                <Button mr={3} mt={4} onClick={onClose}>
+                  Close
+                </Button>
+                <Button mt={4} type="submit" colorScheme="teal">
+                  Add Event
+                </Button>
+              </FormControl>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
