@@ -1,6 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Flex, Heading, Button } from '@chakra-ui/react';
+import { AddEvent } from '../pages/AddEvent';
 
 export const Navigation = () => {
   return (
@@ -13,12 +13,12 @@ export const Navigation = () => {
     >
       <Heading>Eventlist</Heading>
       <Flex flexDirection="row" gap="2rem">
-        <Link to="/">
-          <Button>All events</Button>
+        <Link href="/">
+          <Button size="sm" colorScheme="blue">
+            All Events
+          </Button>
         </Link>
-        <Link to="/AddEvent">
-          <Button>Add event</Button>
-        </Link>
+        <AddEvent />
       </Flex>
     </Flex>
   );

@@ -45,9 +45,11 @@ export const DeleteEvent = ({ event }) => {
           description: `${event.title} is being deleted`,
         },
       });
-      navigate(`/`);
     } catch (error) {
       console.error('An error occurred while deleting the event:', error);
+    } finally {
+      onClose();
+      navigate(`/`);
     }
   };
 
@@ -60,7 +62,7 @@ export const DeleteEvent = ({ event }) => {
         variant="outline"
         onClick={onOpen}
       >
-        Delete event
+        Delete
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size={['xs', 'sm', 'md']}>

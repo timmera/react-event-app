@@ -8,15 +8,16 @@ import { UserPage } from './pages/UserPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Root } from './components/Root';
 import { ChakraProvider } from '@chakra-ui/react';
-import { fetchData } from './service/ApiService';
+import { FetchData } from './service/FetchData';
+import { EditEvent } from './pages/EditEvent';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     loader: async () => {
-      const eventData = await fetchData(`/events/`);
-      const userData = await fetchData(`/users/`);
+      const eventData = await FetchData(`/events/`);
+      const userData = await FetchData(`/users/`);
       return { eventData, userData };
     },
     id: 'events',
@@ -31,11 +32,22 @@ const router = createBrowserRouter([
         element: <AddEvent />,
       },
       {
+        path: '/EditEvent/:eventId',
+        element: <EditEvent />,
+        loader: async ({ params }) => {
+          const event = await FetchData(`/events/${params.eventId}`);
+          const user = await FetchData(`/users/${event.createdBy}`);
+          const categories = await FetchData(`/categories`);
+          return { event, user, categories };
+        },
+        id: 'editEvent',
+      },
+      {
         path: '/Events/:eventId',
         element: <EventPage />,
         loader: async ({ params }) => {
-          const event = await fetchData(`/events/${params.eventId}`);
-          const user = await fetchData(`/users/${event.createdBy}`);
+          const event = await FetchData(`/events/${params.eventId}`);
+          const user = await FetchData(`/users/${event.createdBy}`);
           return { event, user };
         },
         id: 'event',
@@ -44,7 +56,7 @@ const router = createBrowserRouter([
       {
         path: '/Users/:userId',
         element: <UserPage />,
-        loader: ({ params }) => fetchData(`/users/${params.userId}`),
+        loader: ({ params }) => FetchData(`/users/${params.userId}`),
         id: 'user',
         // action: addComment,
       },

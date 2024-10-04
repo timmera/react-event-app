@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://localhost:3000';
 
-export const fetchData = async (endpoint) => {
+export const FetchData = async (endpoint) => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`);
     if (!response.ok) {

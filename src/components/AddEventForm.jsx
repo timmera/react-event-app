@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  ModalFooter,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -28,7 +29,7 @@ export const AddEventForm = ({ addEvent }) => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const newEvent = {
       id: Date.now().toString(), // unique ID
@@ -38,26 +39,45 @@ export const AddEventForm = ({ addEvent }) => {
       location,
       categoryIds,
     };
-    addEvent(newEvent);
-
-    toast({
-      title: 'Event has been added.',
-      description:
-        'Your event has been added successfully. You will be redirected to the events page.',
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
     try {
-      navigate(`/`);
+      await toast.promise(addEvent(newEvent), {
+        success: {
+          title: 'Event added',
+          description: `${title} is successfully added`,
+        },
+        error: {
+          title: 'Something went wrong',
+          description: `${title} couldn't be added`,
+        },
+        loading: {
+          title: 'Please wait',
+          description: `${title} is being added`,
+        },
+      });
     } catch (error) {
-      console.error('An error occurred while adding the event:', error);
+      toast({
+        title: 'An error occurred.',
+        description: 'Unable to add event. Please try again later.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      onClose();
+      navigate(`/`);
+      setTitle('');
+      setSelectedUser('');
+      setDescription('');
+      setLocation('');
+      setCategoryIds([]);
     }
   };
 
   return (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button onClick={onOpen} size="sm" colorScheme="blue">
+        Add Event
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay
@@ -68,14 +88,14 @@ export const AddEventForm = ({ addEvent }) => {
           <ModalHeader>Add an Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onSubmit}>
               <FormControl isRequired>
                 <FormLabel>Event Title</FormLabel>
                 <Input
+                  isRequired
                   placeholder="Event Title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  isRequired
                 />
                 <FormLabel>Created By:</FormLabel>
                 <Select
@@ -125,13 +145,14 @@ export const AddEventForm = ({ addEvent }) => {
                   <option value={2}>Games</option>
                   <option value={3}>Relaxation</option>
                 </Select>
-
-                <Button mr={3} mt={4} onClick={onClose}>
-                  Close
-                </Button>
-                <Button mt={4} type="submit" colorScheme="teal">
-                  Add Event
-                </Button>
+                <ModalFooter flexDirection={['column', 'row']} gap="10px">
+                  <Button mr={3} mt={4} size="sm" onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button mt={4} type="submit" colorScheme="green" size="sm">
+                    Add Event
+                  </Button>
+                </ModalFooter>
               </FormControl>
             </form>
           </ModalBody>
