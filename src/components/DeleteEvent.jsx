@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -65,33 +66,30 @@ export const DeleteEvent = ({ event }) => {
         Delete
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={['xs', 'sm', 'md']}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={{ base: 'full', sm: 'lg' }}
+      >
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
-        <ModalContent textAlign="center">
-          <ModalHeader fontWeight="bold">Caution!</ModalHeader>
+        <ModalContent>
+          <ModalHeader fontWeight="bold">Delete Event</ModalHeader>
+          <Divider />
           <ModalCloseButton />
           <ModalBody>
-            Are you sure you want to delete the event:{' '}
-            <strong>{event.title}</strong>?
+            Are you sure you want to delete the event:
+            <div>
+              <strong>{event.title}</strong>?
+            </div>
           </ModalBody>
           <ModalFooter flexDirection={['column', 'row']} gap="10px">
-            <Button
-              onClick={onClose}
-              colorScheme="ghost"
-              size="sm"
-              variant="outline"
-            >
+            <Button mr={3} mt={4} onClick={onClose} size="sm">
               No, please go back
             </Button>
-            <Button
-              onClick={onDelete}
-              colorScheme="red"
-              size="sm"
-              variant="outline"
-            >
+            <Button mt={4} onClick={onDelete} size="sm" colorScheme="red">
               Yes, I want to delete
             </Button>
           </ModalFooter>

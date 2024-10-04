@@ -7,7 +7,11 @@ import {
   Button,
   ButtonGroup,
   Text,
-  Spacer,
+  CardBody,
+  CardFooter,
+  Card,
+  Stack,
+  Divider,
 } from '@chakra-ui/react';
 import { MdBuild, MdInfoOutline } from 'react-icons/md';
 import { useEffect, useState } from 'react';
@@ -78,75 +82,62 @@ export const EventsPage = () => {
             (user) => Number(user.id) === event.createdBy
           )?.name;
           return (
-            <Box
-              borderRadius={'md'}
+            <Card
+              maxW="sm"
+              borderRadius="md"
               key={event.id}
-              justifyContent="center"
-              bgColor={'blue.600'}
-              m={3}
-              p={4}
               sx={{
                 boxShadow:
                   '0 1px 1px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.12), 0 8px 8px rgba(0,0,0,0.12), 0 16px 16px rgba(0,0,0,0.12)',
-                bgSize: 'cover',
-                bgImage: `url(${event.image})`,
-                bgBlendMode: 'lighten',
               }}
               minH={'400px'}
               minW={'500px'}
             >
-              <Box mb="4" bg={'white'}>
-                <Heading fontSize="xl">{event.title}</Heading>
-                <Text fontSize="xs">Added by: {eventCreator}</Text>
-              </Box>
-              <Box
-                bg="white"
-                p="4"
-                fontWeight="semibold"
-                letterSpacing="wide"
-                fontSize="xs"
-                textTransform="uppercase"
-              >
-                <Text>{event.date}</Text>
-                <Text>{event.location}</Text>
-                <Text>{event.description}</Text>
-              </Box>
-
-              <ButtonGroup flexDirection={['column', 'row']} gap="10px" mt="4">
-                <Flex>
-                  <Box position={'relative'} bottom={'0'}>
-                    <Box p="2">
-                      <Link to={`events/${event.id}`}>
-                        <Button
-                          leftIcon={<MdInfoOutline />}
-                          colorScheme="green"
-                          size="sm"
-                        >
-                          Details
-                        </Button>
-                      </Link>
-                    </Box>
-                    <Spacer />
-                    <Box p="2">
-                      <Link to={`EditEvent/${event.id}`}>
-                        <Button
-                          leftIcon={<MdBuild />}
-                          colorScheme="blue"
-                          size="sm"
-                          variant="outline"
-                        >
-                          Edit
-                        </Button>
-                      </Link>
-                    </Box>
-                    <Spacer />
-                    <Box p="2">
-                      <DeleteEvent event={event} />
-                    </Box>
+              <CardBody>
+                <Stack mt="6" spacing="3">
+                  <Heading fontSize="xl">{event.title}</Heading>
+                  <Text fontSize="xs">Added by: {eventCreator}</Text>
+                  <Divider />
+                  <Box
+                    bgColor={'blackAlpha.200'}
+                    bgSize="cover"
+                    bgRepeat={'no-repeat'}
+                    bgImage={`url(${event.image})`}
+                    bgBlendMode={'revert'}
+                    height={'250px'}
+                  >
+                    <Text>{event.date}</Text>
+                    <Text>{event.location}</Text>
+                    <Text>{event.description}</Text>
                   </Box>
-                </Flex>
-              </ButtonGroup>
-            </Box>
+                </Stack>
+              </CardBody>
+              <Divider />
+              <CardFooter justifyContent={'center'}>
+                <ButtonGroup gap={4}>
+                  <Link to={`events/${event.id}`}>
+                    <Button
+                      leftIcon={<MdInfoOutline />}
+                      colorScheme="green"
+                      size="sm"
+                    >
+                      Details
+                    </Button>
+                  </Link>
+                  <Link to={`EditEvent/${event.id}`}>
+                    <Button
+                      leftIcon={<MdBuild />}
+                      colorScheme="blue"
+                      size="sm"
+                      variant="outline"
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                  <DeleteEvent event={event} />
+                </ButtonGroup>
+              </CardFooter>
+            </Card>
           );
         })}
       </Flex>

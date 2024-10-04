@@ -14,6 +14,7 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
+  Divider,
 } from '@chakra-ui/react';
 import { useRouteLoaderData, useNavigate } from 'react-router-dom';
 
@@ -75,7 +76,7 @@ export const AddEventForm = ({ addEvent }) => {
 
   return (
     <>
-      <Button onClick={onOpen} size="sm" colorScheme="blue">
+      <Button onClick={onOpen} colorScheme="blue" size="sm">
         Add Event
       </Button>
 
@@ -85,7 +86,8 @@ export const AddEventForm = ({ addEvent }) => {
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
         <ModalContent>
-          <ModalHeader>Add an Event</ModalHeader>
+          <ModalHeader fontWeight="bold">Add Event</ModalHeader>
+          <Divider />
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={onSubmit}>

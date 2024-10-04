@@ -8,6 +8,7 @@ import {
   Input,
   Select,
   Modal,
+  ModalHeader,
   ModalBody,
   ModalFooter,
   ModalCloseButton,
@@ -105,7 +106,10 @@ export const EditEventForm = () => {
     <>
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          onClose();
+          navigate(`/events/${event.event.id}`);
+        }}
         size={{ base: 'full', sm: 'lg' }}
       >
         <ModalOverlay
@@ -113,16 +117,17 @@ export const EditEventForm = () => {
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
         <ModalContent>
+          <ModalHeader fontWeight="bold">Edit Event</ModalHeader>
+          <Divider />
           <ModalCloseButton />
           <ModalBody paddingY={6}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Flex flexDirection="column" rowGap="10px">
-                <FormControl className="title">
-                  <FormLabel w="200px">Title</FormLabel>
+                <FormControl>
+                  <FormLabel>Title</FormLabel>
 
                   <Input
                     type="text"
-                    variant="modal"
                     name="title"
                     {...register('title', {
                       required: 'Fill in a title for your event',
@@ -131,8 +136,8 @@ export const EditEventForm = () => {
                   <Text color="red.500">{errors.title?.message}</Text>
                 </FormControl>
 
-                <FormControl className="createdBy">
-                  <FormLabel w="200px">Created By:</FormLabel>
+                <FormControl>
+                  <FormLabel>Created By:</FormLabel>
 
                   <Select {...register('createdBy', { valueAsNumber: true })}>
                     {users.map((user) => (
@@ -144,11 +149,10 @@ export const EditEventForm = () => {
                   <Text color="red.500">{errors.createdBy?.message}</Text>
                 </FormControl>
 
-                <FormControl className="description">
+                <FormControl>
                   <FormLabel>Short description</FormLabel>
                   <Input
                     type="text"
-                    variant="modal"
                     name="description"
                     {...register('description', {
                       required: 'Fill in a short description for your event',
@@ -161,11 +165,10 @@ export const EditEventForm = () => {
                   <Text color="red.500">{errors.description?.message}</Text>
                 </FormControl>
 
-                <FormControl className="image">
+                <FormControl>
                   <FormLabel>Image url</FormLabel>
                   <Input
                     type="text"
-                    variant="modal"
                     name="image"
                     {...register('image', {
                       required: 'Upload an image for your event',
@@ -174,7 +177,20 @@ export const EditEventForm = () => {
                   <Text color="red.500">{errors.image?.message}</Text>
                 </FormControl>
 
-                <FormControl className="category">
+                <FormControl>
+                  <FormLabel>Location</FormLabel>
+
+                  <Input
+                    type="text"
+                    name="location"
+                    {...register('location', {
+                      required: 'Fill in a location for your event',
+                    })}
+                  />
+                  <Text color="red.500">{errors.location?.message}</Text>
+                </FormControl>
+
+                <FormControl>
                   <FormLabel>Categories</FormLabel>
                   <Stack
                     direction={{ base: 'column', sm: 'row' }}
@@ -183,7 +199,6 @@ export const EditEventForm = () => {
                     {categories.map((category) => (
                       <Checkbox
                         key={category.id}
-                        variant="modal"
                         name={category.id}
                         value={category.id}
                         defaultChecked={eventCategories.includes(
@@ -204,29 +219,19 @@ export const EditEventForm = () => {
                   )}
                 </FormControl>
 
-                <FormControl className="location">
-                  <FormLabel>Location</FormLabel>
-
-                  <Input
-                    type="text"
-                    variant="modal"
-                    name="location"
-                    {...register('location', {
-                      required: 'Fill in a location for your event',
-                    })}
-                  />
-                  <Text color="red.500">{errors.location?.message}</Text>
-                </FormControl>
-
-                <Divider
-                  borderColor="gray.200"
-                  opacity="1"
-                  borderWidth={'1px'}
-                />
+                <Divider mt={4} />
 
                 <ModalFooter flexDirection={['column', 'row']} gap="10px">
                   <Flex direction={{ base: 'column', sm: 'row' }} gap="10px">
-                    <Button mr={3} mt={4} size="sm" onClick={onClose}>
+                    <Button
+                      mr={3}
+                      mt={4}
+                      size="sm"
+                      onClick={() => {
+                        onClose();
+                        navigate(`/`);
+                      }}
+                    >
                       Close
                     </Button>
                     <Button type="submit" mt={4} colorScheme="green" size="sm">

@@ -48,7 +48,8 @@ const router = createBrowserRouter([
         loader: async ({ params }) => {
           const event = await FetchData(`/events/${params.eventId}`);
           const user = await FetchData(`/users/${event.createdBy}`);
-          return { event, user };
+          const categories = await FetchData(`/categories/`);
+          return { event, user, categories };
         },
         id: 'event',
         // action: addComment,
