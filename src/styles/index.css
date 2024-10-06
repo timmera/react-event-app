@@ -1,0 +1,40 @@
+html,
+body,
+header,
+footer,
+main,
+section,
+div,
+p,
+img,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+img {
+  filter: saturate(40%);
+}
+
+.searchBox,
+input {
+  border: 1px solid #a5b68d;
+  border-radius: 5px;
+  color: #a5b68d;
+}
+
+.imageBox {
+  filter: saturate(30%);
+}

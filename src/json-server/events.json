@@ -25,25 +25,24 @@
   ],
   "events": [
     {
-      "createdBy": 3,
-      "title": "Trampoline party",
+      "createdBy": 4,
+      "title": "Trampoline party!",
       "description": "Bounce around with your friends",
       "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
       "categoryIds": [
         1,
-        2,
-        3
+        2
       ],
       "location": "My back yard",
       "id": "1"
     },
     {
-      "createdBy": 1,
-      "title": "Laser Tag maniaaaa",
+      "createdBy": 2,
+      "title": "Laser Tag mania",
       "description": "Let's play laser tag!",
       "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
       "categoryIds": [
-        2
+        1
       ],
       "location": "Blinded by the Lights Laser Tag, 15 Main St.",
       "id": "2"
@@ -54,9 +53,7 @@
       "description": "Hit that shuttle!",
       "image": "https://wincacademy.github.io/webpages/media/pexels-vladvictoria-2202685.jpg",
       "categoryIds": [
-        1,
-        2,
-        3
+        1
       ],
       "location": "The Park",
       "id": "3"
@@ -67,8 +64,6 @@
       "description": "It's a bit of a stretch.",
       "image": "https://wincacademy.github.io/webpages/media/pexels-gabby-k-5384538.jpg",
       "categoryIds": [
-        1,
-        2,
         3
       ],
       "location": "Shavasana Yoga School",
@@ -86,47 +81,49 @@
       "id": "1726427907859"
     },
     {
-      "id": "1726602491614",
-      "title": "dsd",
       "createdBy": 1,
+      "title": "dsd",
       "description": "fdf",
+      "image": "https://nu.nl",
+      "categoryIds": [
+        1
+      ],
       "location": "df",
-      "categoryIds": [
-        1,
-        2
-      ]
+      "id": "1726602491614"
     },
     {
-      "id": "1727162172835",
-      "title": "test converttostring",
       "createdBy": 3,
-      "description": "testdesc",
-      "location": "loc",
-      "categoryIds": [
-        1,
-        2
-      ]
-    },
-    {
-      "id": "1727174967923",
-      "title": "test update home",
-      "createdBy": 3,
-      "description": "test",
-      "location": "test",
-      "categoryIds": [
-        2
-      ]
-    },
-    {
-      "id": "1728052695573",
       "title": "Padellen",
-      "createdBy": 3,
       "description": "Lekker padellen competitie",
+      "image": "https://images.pexels.com/photos/1103833/pexels-photo-1103833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "categoryIds": [
+        1
+      ],
       "location": "The Padellers Uitgeest",
+      "id": "1728052695573"
+    },
+    {
+      "createdBy": 3,
+      "title": "Nieuw event",
+      "description": "Nieuw eventje",
+      "image": "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg",
+      "categoryIds": [
+        1
+      ],
+      "location": "Amsterdam",
+      "id": "1728236199943"
+    },
+    {
+      "id": "1728239375717",
+      "createdBy": 3,
+      "title": "Zaalvoetbal",
+      "description": "futsal competitie",
+      "image": "https://images.pexels.com/photos/13521967/pexels-photo-13521967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "categoryIds": [
         1,
         2
-      ]
+      ],
+      "location": "Barcelona"
     }
   ],
   "categories": [

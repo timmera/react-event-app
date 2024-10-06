@@ -1,6 +1,7 @@
 import { useRouteLoaderData, Link } from 'react-router-dom';
 import {
   Badge,
+  Checkbox,
   Heading,
   Box,
   Flex,
@@ -17,12 +18,15 @@ import { MdBuild, MdInfoOutline } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import { DeleteEvent } from '../components/DeleteEvent';
 import { Search } from '../components/Search';
+import '../styles/index.css';
 
 export const EventsPage = () => {
   const data = useRouteLoaderData('events');
+  const categories = data.categories;
   const [eventData, setEventData] = useState(data.eventData || []);
   const [userData, setUserData] = useState(data.userData || []);
   const [searchField, setSearchField] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     setEventData(data.eventData);
@@ -33,42 +37,61 @@ export const EventsPage = () => {
     setSearchField(event.target.value);
   };
 
+  const handleCategoryChange = (event) => {
+    const { value } = event.target;
+    setSelectedCategory(value === selectedCategory ? null : value);
+  };
+
+  console.log('eventData', eventData);
+
   const matchedEvents = eventData.filter((event) => {
-    return event.title.toLowerCase().includes(searchField.toLowerCase());
+    const matchesSearch = event.title
+      .toLowerCase()
+      .includes(searchField.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? event.categoryIds.includes(Number(selectedCategory))
+      : true;
+    return matchesSearch && matchesCategory;
   });
 
   return (
-    <>
-      <Flex
-        justifyContent="center"
-        alignItems="center"
-        gap="2"
-        direction="column"
-        mb="4"
-      >
-        <Box>
-          <Search onChange={handleSearch} />
-        </Box>
-        <Box>
-          {matchedEvents.length > 1 ? (
-            <>
-              <Badge colorScheme="green">
-                Found {matchedEvents.length} events
-              </Badge>
-            </>
-          ) : matchedEvents.length == 1 ? (
-            <>
-              <Badge colorScheme="green">
-                Found {matchedEvents.length} event
-              </Badge>
-            </>
-          ) : (
-            <Badge variant={'solid'} colorScheme={'red'}>
-              No results found!
+    <Box>
+      <Box>
+        filter by category:
+        {categories.map((category) => (
+          <Checkbox
+            key={category.id}
+            name={category.id}
+            value={category.id}
+            isChecked={selectedCategory === category.id}
+            onChange={handleCategoryChange}
+          >
+            {category.name}
+          </Checkbox>
+        ))}
+      </Box>
+      <Box mb="4">
+        <Search onChange={handleSearch} className="searchBox" />
+      </Box>
+      <Box>
+        {matchedEvents.length > 1 ? (
+          <>
+            <Badge colorScheme="green">
+              Found {matchedEvents.length} events
             </Badge>
-          )}
-        </Box>
-      </Flex>
+          </>
+        ) : matchedEvents.length === 1 ? (
+          <>
+            <Badge colorScheme="green">
+              Found {matchedEvents.length} event
+            </Badge>
+          </>
+        ) : (
+          <Badge variant={'solid'} colorScheme={'red'}>
+            No results found!
+          </Badge>
+        )}
+      </Box>
       <Flex
         gap="4"
         wrap="wrap"
@@ -103,8 +126,8 @@ export const EventsPage = () => {
                     bgSize="cover"
                     bgRepeat={'no-repeat'}
                     bgImage={`url(${event.image})`}
-                    bgBlendMode={'revert'}
                     height={'250px'}
+                    className="imageBox"
                   >
                     <Text>{event.date}</Text>
                     <Text>{event.location}</Text>
@@ -141,6 +164,6 @@ export const EventsPage = () => {
           );
         })}
       </Flex>
-    </>
+    </Box>
   );
 };

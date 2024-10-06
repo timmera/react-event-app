@@ -1,76 +1,95 @@
-import React, { useState } from 'react';
 import {
   Button,
-  Input,
+  Checkbox,
+  Divider,
+  Flex,
   FormControl,
   FormLabel,
+  Input,
   Select,
   Modal,
-  ModalOverlay,
-  ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
   ModalFooter,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Stack,
+  Text,
   useDisclosure,
   useToast,
-  Divider,
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useNavigate } from 'react-router-dom';
 
-export const AddEventForm = ({ addEvent }) => {
-  const events = useRouteLoaderData('events');
-  const users = events.userData;
-  const [title, setTitle] = useState('');
-  const [selectedUser, setSelectedUser] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [categoryIds, setCategoryIds] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export const AddEventForm = () => {
   const toast = useToast();
   const navigate = useNavigate();
+  const users = useRouteLoaderData('events').userData;
+  const categories = useRouteLoaderData('events').categories;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    reset,
+  } = useForm({
+    defaultValues: {
+      createdBy: '',
+      title: '',
+      description: '',
+      image: '',
+      location: '',
+      categoryIds: [],
+    },
+  });
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     const newEvent = {
-      id: Date.now().toString(), // unique ID
-      title,
-      createdBy: selectedUser,
-      description,
-      location,
-      categoryIds,
+      id: Date.now().toString(),
+      createdBy: Number(data.createdBy),
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      categoryIds: data.categoryIds.map((id) => Number(id)),
+      location: data.location,
     };
+
+    const createEvent = async () => {
+      const response = await fetch(`http://localhost:3000/events/`, {
+        method: 'POST',
+        body: JSON.stringify(newEvent),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to create event');
+      } else {
+        return response.json();
+      }
+    };
+
     try {
-      await toast.promise(addEvent(newEvent), {
+      await toast.promise(createEvent(), {
         success: {
-          title: 'Event added',
-          description: `${title} is successfully added`,
+          title: 'The event is created',
+          description: 'Looking good',
         },
         error: {
-          title: 'Something went wrong',
-          description: `${title} couldn't be added`,
+          title: "The event couldn't be created",
+          description: 'Something went wrong',
         },
         loading: {
-          title: 'Please wait',
-          description: `${title} is being added`,
+          title: 'The changes are being processed',
+          description: 'Please wait',
         },
       });
-    } catch (error) {
-      toast({
-        title: 'An error occurred.',
-        description: 'Unable to add event. Please try again later.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
       onClose();
+      reset();
       navigate(`/`);
-      setTitle('');
-      setSelectedUser('');
-      setDescription('');
-      setLocation('');
-      setCategoryIds([]);
+    } catch (error) {
+      console.error('Error during creating event:', error);
     }
   };
 
@@ -79,8 +98,13 @@ export const AddEventForm = ({ addEvent }) => {
       <Button onClick={onOpen} colorScheme="blue" size="sm">
         Add Event
       </Button>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+        }}
+        size={{ base: 'full', sm: 'lg' }}
+      >
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
@@ -89,73 +113,122 @@ export const AddEventForm = ({ addEvent }) => {
           <ModalHeader fontWeight="bold">Add Event</ModalHeader>
           <Divider />
           <ModalCloseButton />
-          <ModalBody>
-            <form onSubmit={onSubmit}>
-              <FormControl isRequired>
-                <FormLabel>Event Title</FormLabel>
-                <Input
-                  isRequired
-                  placeholder="Event Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <FormLabel>Created By:</FormLabel>
-                <Select
-                  placeholder="Select user"
-                  value={selectedUser}
-                  onChange={(e) => setSelectedUser(Number(e.target.value))}
-                  isRequired
-                >
-                  {users &&
-                    users.map((user) => (
+          <ModalBody paddingY={6}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Flex flexDirection="column" rowGap="10px">
+                <FormControl>
+                  <FormLabel>Title</FormLabel>
+
+                  <Input
+                    type="text"
+                    name="title"
+                    {...register('title', {
+                      required: 'Fill in a title for your event',
+                    })}
+                  />
+                  <Text color="red.500">{errors.title?.message}</Text>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Created By:</FormLabel>
+
+                  <Select {...register('createdBy', { valueAsNumber: true })}>
+                    {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.name}
                       </option>
                     ))}
-                </Select>
-                <FormLabel>Event Description:</FormLabel>
-                <Input
-                  placeholder="Event Description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  isRequired
-                />
-                <FormLabel>Event Location:</FormLabel>
-                <Input
-                  placeholder="Event Location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  isRequired
-                />
-                <FormLabel>Categories:</FormLabel>
-                <Select
-                  name="categories"
-                  multiple={true}
-                  value={categoryIds}
-                  size={5}
-                  variant={'unstyled'}
-                  isRequired
-                  onChange={(e) => {
-                    const selectedOptions = Array.from(
-                      e.target.selectedOptions,
-                      (option) => Number(option.value) // Convert to number
-                    );
-                    setCategoryIds(selectedOptions);
-                  }}
-                >
-                  <option value={1}>Sports</option>
-                  <option value={2}>Games</option>
-                  <option value={3}>Relaxation</option>
-                </Select>
+                  </Select>
+                  <Text color="red.500">{errors.createdBy?.message}</Text>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Short description</FormLabel>
+                  <Input
+                    type="text"
+                    name="description"
+                    {...register('description', {
+                      required: 'Fill in a short description for your event',
+                      maxLength: {
+                        value: 50,
+                        message: 'Please, keep the description short',
+                      },
+                    })}
+                  />
+                  <Text color="red.500">{errors.description?.message}</Text>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Image url</FormLabel>
+                  <Input
+                    type="text"
+                    name="image"
+                    {...register('image', {
+                      required: 'Upload an image for your event',
+                    })}
+                  />
+                  <Text color="red.500">{errors.image?.message}</Text>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Location</FormLabel>
+
+                  <Input
+                    type="text"
+                    name="location"
+                    {...register('location', {
+                      required: 'Fill in a location for your event',
+                    })}
+                  />
+                  <Text color="red.500">{errors.location?.message}</Text>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Categories</FormLabel>
+                  <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    columnGap={5}
+                  >
+                    {categories.map((category) => (
+                      <Checkbox
+                        key={category.id}
+                        name={category.id}
+                        value={category.id}
+                        {...register('categoryIds', {
+                          validate: (value) =>
+                            value.length > 0 ||
+                            'At least one category must be selected',
+                        })}
+                      >
+                        {category.name}
+                      </Checkbox>
+                    ))}
+                  </Stack>
+                  {errors.categoryIds && (
+                    <Text color="red.500">{errors.categoryIds.message}</Text>
+                  )}
+                </FormControl>
+
+                <Divider mt={4} />
+
                 <ModalFooter flexDirection={['column', 'row']} gap="10px">
-                  <Button mr={3} mt={4} size="sm" onClick={onClose}>
-                    Close
-                  </Button>
-                  <Button mt={4} type="submit" colorScheme="green" size="sm">
-                    Add Event
-                  </Button>
+                  <Flex direction={{ base: 'column', sm: 'row' }} gap="10px">
+                    <Button
+                      mr={3}
+                      mt={4}
+                      size="sm"
+                      onClick={() => {
+                        onClose();
+                      }}
+                    >
+                      Close
+                    </Button>
+                    <Button type="submit" mt={4} colorScheme="green" size="sm">
+                      Save
+                    </Button>
+                  </Flex>
                 </ModalFooter>
-              </FormControl>
+              </Flex>
             </form>
           </ModalBody>
         </ModalContent>

@@ -17,16 +17,11 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
-// import { MdLocalShipping } from 'react-icons/md';
 
 export const EventPage = () => {
   const event = useRouteLoaderData('event');
   const categories = useRouteLoaderData('event').categories;
   const categoryIds = event.event.categoryIds;
-  console.log('event', event);
-  console.log('categorIds', categoryIds);
-  console.log('categories', categories);
-
   const matchedCategories = categories.filter((category) => {
     return categoryIds.includes(Number(category.id));
   });
@@ -41,12 +36,16 @@ export const EventPage = () => {
         <Flex>
           <Image
             rounded={'md'}
-            alt={'product image'}
+            alt={'event image'}
             src={event.event.image}
             fit={'cover'}
             align={'center'}
             w={'100%'}
             h={{ base: '100%', sm: '400px', lg: '500px' }}
+            sx={{
+              boxShadow:
+                '0 1px 1px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.12), 0 8px 8px rgba(0,0,0,0.12), 0 16px 16px rgba(0,0,0,0.12)',
+            }}
           />
         </Flex>
         <Stack spacing={{ base: 6, md: 10 }}>

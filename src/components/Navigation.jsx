@@ -7,12 +7,13 @@ export const Navigation = () => {
     <Flex
       flexDirection="column"
       alignItems="center"
-      mb="2rem"
-      gap="2rem"
+      mb="8"
+      gap="8"
       textAlign="center"
+      backgroundColor={'#A5B68D'}
     >
-      <Heading>Eventlist</Heading>
-      <Flex flexDirection="row" gap="2rem">
+      <Heading>Current Events</Heading>
+      <Flex flexDirection="row" gap="8" mb="8">
         <Link href="/">
           <Button size="sm" colorScheme="blue">
             All Events

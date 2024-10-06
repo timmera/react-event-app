@@ -96,7 +96,7 @@ export const EditEventForm = () => {
       });
       onClose();
       reset();
-      navigate(`/events/${event.event.id}`);
+      navigate(`/Events/${event.event.id}`);
     } catch (error) {
       console.error('Error during editing event:', error);
     }
@@ -108,7 +108,7 @@ export const EditEventForm = () => {
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          navigate(`/events/${event.event.id}`);
+          navigate(`/Events/${event.event.id}`);
         }}
         size={{ base: 'full', sm: 'lg' }}
       >
@@ -229,13 +229,13 @@ export const EditEventForm = () => {
                       size="sm"
                       onClick={() => {
                         onClose();
-                        navigate(`/`);
+                        navigate(`/Events/${event.event.id}`);
                       }}
                     >
                       Close
                     </Button>
                     <Button type="submit" mt={4} colorScheme="green" size="sm">
-                      Edit event
+                      Save
                     </Button>
                   </Flex>
                 </ModalFooter>

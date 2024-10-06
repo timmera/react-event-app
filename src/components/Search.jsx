@@ -4,14 +4,14 @@ import { SearchIcon } from '@chakra-ui/icons';
 export const Search = ({ changeFn, ...props }) => {
   return (
     <>
-      <Stack>
+      <Stack className="searchBox">
         <InputGroup>
-          <InputLeftElement pointerEvents="none">
+          <InputLeftElement>
             <SearchIcon />
           </InputLeftElement>
           <Input
             type="text"
-            placeholder="Search your Event..."
+            placeholder="Search Events..."
             onChange={changeFn}
             {...props}
           />
