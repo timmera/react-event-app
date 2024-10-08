@@ -11,38 +11,32 @@
       "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb401d7131c760ca1c63_Elieska%20Lensink.jpg"
     },
     {
-      "name": "Arjan",
-      "email": "test@test.nl",
-      "website": "https://www.test.nl",
-      "id": "3"
-    },
-    {
-      "name": "sdsdssd",
-      "email": "s@b.nl",
-      "website": "http://www.test.nl",
-      "id": "4"
+      "id": "3",
+      "name": "Arjan Timmer",
+      "image": "https://images.pexels.com/photos/8119643/pexels-photo-8119643.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ],
   "events": [
     {
-      "createdBy": 4,
-      "title": "Trampoline party!",
+      "createdBy": 1,
+      "title": "Trampoline party",
       "description": "Bounce around with your friends",
       "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
       "categoryIds": [
         1,
-        2
+        2,
+        3
       ],
       "location": "My back yard",
       "id": "1"
     },
     {
-      "createdBy": 2,
+      "createdBy": 1,
       "title": "Laser Tag mania",
       "description": "Let's play laser tag!",
       "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
       "categoryIds": [
-        1
+        2
       ],
       "location": "Blinded by the Lights Laser Tag, 15 Main St.",
       "id": "2"
@@ -71,59 +65,14 @@
     },
     {
       "createdBy": 3,
-      "title": "Paintball",
-      "description": "Lekker knallen!",
-      "image": "https://images.pexels.com/photos/669281/pexels-photo-669281.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "categoryIds": [
-        1
-      ],
-      "location": "Spaarnwoude",
-      "id": "1726427907859"
-    },
-    {
-      "createdBy": 1,
-      "title": "dsd",
-      "description": "fdf",
-      "image": "https://nu.nl",
-      "categoryIds": [
-        1
-      ],
-      "location": "df",
-      "id": "1726602491614"
-    },
-    {
-      "createdBy": 3,
-      "title": "Padellen",
-      "description": "Lekker padellen competitie",
-      "image": "https://images.pexels.com/photos/1103833/pexels-photo-1103833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "categoryIds": [
-        1
-      ],
-      "location": "The Padellers Uitgeest",
-      "id": "1728052695573"
-    },
-    {
-      "createdBy": 3,
-      "title": "Nieuw event",
-      "description": "Nieuw eventje",
-      "image": "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg",
+      "title": "Futsal tournament",
+      "description": "Get ready for an exciting futsal tournament!",
+      "image": "https://images.pexels.com/photos/13521967/pexels-photo-13521967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "categoryIds": [
         1
       ],
       "location": "Amsterdam",
-      "id": "1728236199943"
-    },
-    {
-      "id": "1728239375717",
-      "createdBy": 3,
-      "title": "Zaalvoetbal",
-      "description": "futsal competitie",
-      "image": "https://images.pexels.com/photos/13521967/pexels-photo-13521967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "categoryIds": [
-        1,
-        2
-      ],
-      "location": "Barcelona"
+      "id": "1728293313201"
     }
   ],
   "categories": [

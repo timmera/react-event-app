@@ -12,6 +12,7 @@ import {
   CardFooter,
   Card,
   Stack,
+  Spacer,
   Divider,
 } from '@chakra-ui/react';
 import { MdBuild, MdInfoOutline } from 'react-icons/md';
@@ -42,8 +43,6 @@ export const EventsPage = () => {
     setSelectedCategory(value === selectedCategory ? null : value);
   };
 
-  console.log('eventData', eventData);
-
   const matchedEvents = eventData.filter((event) => {
     const matchesSearch = event.title
       .toLowerCase()
@@ -56,42 +55,42 @@ export const EventsPage = () => {
 
   return (
     <Box>
-      <Box>
-        filter by category:
-        {categories.map((category) => (
-          <Checkbox
-            key={category.id}
-            name={category.id}
-            value={category.id}
-            isChecked={selectedCategory === category.id}
-            onChange={handleCategoryChange}
-          >
-            {category.name}
-          </Checkbox>
-        ))}
-      </Box>
-      <Box mb="4">
-        <Search onChange={handleSearch} className="searchBox" />
-      </Box>
-      <Box>
-        {matchedEvents.length > 1 ? (
-          <>
+      <Flex gap="4">
+        <Box className="categoryFilter">
+          <Text>Filter by category:</Text>
+          {categories.map((category) => (
+            <Checkbox
+              key={category.id}
+              name={category.id}
+              value={category.id}
+              borderColor={'black'}
+              isChecked={selectedCategory === category.id}
+              onChange={handleCategoryChange}
+            >
+              {category.name}
+            </Checkbox>
+          ))}
+        </Box>
+        <Spacer />
+        <Box className="matchedEvents">
+          <Box className="searchBox">
+            <Search onChange={handleSearch} />
+          </Box>
+          {matchedEvents.length > 1 ? (
             <Badge colorScheme="green">
               Found {matchedEvents.length} events
             </Badge>
-          </>
-        ) : matchedEvents.length === 1 ? (
-          <>
+          ) : matchedEvents.length === 1 ? (
             <Badge colorScheme="green">
               Found {matchedEvents.length} event
             </Badge>
-          </>
-        ) : (
-          <Badge variant={'solid'} colorScheme={'red'}>
-            No results found!
-          </Badge>
-        )}
-      </Box>
+          ) : (
+            <Badge variant={'solid'} colorScheme={'red'}>
+              No results found!
+            </Badge>
+          )}
+        </Box>
+      </Flex>
       <Flex
         gap="4"
         wrap="wrap"
@@ -117,10 +116,44 @@ export const EventsPage = () => {
               minW={'500px'}
             >
               <CardBody>
-                <Stack mt="6" spacing="3">
+                <Stack mt="6">
                   <Heading fontSize="xl">{event.title}</Heading>
                   <Text fontSize="xs">Added by: {eventCreator}</Text>
                   <Divider />
+                  <Box direction={'row'} width={'100%'}>
+                    {event.categoryIds.map((categoryId) => {
+                      const eventCategory = categories?.find(
+                        (cat) => Number(cat.id) === categoryId
+                      )?.name;
+
+                      let colorScheme = 'gray';
+                      switch (eventCategory) {
+                        case 'sports':
+                          colorScheme = 'green';
+                          break;
+                        case 'games':
+                          colorScheme = 'orange';
+                          break;
+                        case 'relaxation':
+                          colorScheme = 'purple';
+                          break;
+                        default:
+                          break;
+                      }
+
+                      return (
+                        <Badge
+                          key={categoryId}
+                          name={categoryId}
+                          value={categoryId}
+                          colorScheme={colorScheme}
+                          m={1}
+                        >
+                          {eventCategory}
+                        </Badge>
+                      );
+                    })}
+                  </Box>
                   <Box
                     bgColor={'blackAlpha.200'}
                     bgSize="cover"
@@ -129,9 +162,15 @@ export const EventsPage = () => {
                     height={'250px'}
                     className="imageBox"
                   >
-                    <Text>{event.date}</Text>
-                    <Text>{event.location}</Text>
-                    <Text>{event.description}</Text>
+                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                      {event.date}
+                    </Text>
+                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                      {event.location}
+                    </Text>
+                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                      {event.description}
+                    </Text>
                   </Box>
                 </Stack>
               </CardBody>

@@ -224,7 +224,7 @@ export const AddEventForm = () => {
                       Close
                     </Button>
                     <Button type="submit" mt={4} colorScheme="green" size="sm">
-                      Save
+                      Add
                     </Button>
                   </Flex>
                 </ModalFooter>

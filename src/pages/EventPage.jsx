@@ -21,6 +21,7 @@ import {
 export const EventPage = () => {
   const event = useRouteLoaderData('event');
   const categories = useRouteLoaderData('event').categories;
+  const user = useRouteLoaderData('event').user;
   const categoryIds = event.event.categoryIds;
   const matchedCategories = categories.filter((category) => {
     return categoryIds.includes(Number(category.id));
@@ -48,7 +49,7 @@ export const EventPage = () => {
             }}
           />
         </Flex>
-        <Stack spacing={{ base: 6, md: 10 }}>
+        <Stack spacing={{ base: 2, md: 4 }}>
           <Box as={'header'}>
             <Heading
               lineHeight={1.1}
@@ -75,21 +76,25 @@ export const EventPage = () => {
               />
             }
           >
-            <VStack spacing={{ base: 4, sm: 6 }}>
-              <Text
-                color={useColorModeValue('gray.500', 'gray.400')}
-                fontSize={'2xl'}
-                fontWeight={'300'}
-              >
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore
-              </Text>
-              <Text fontSize={'lg'}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
-                aliquid amet at delectus doloribus dolorum expedita hic, ipsum
-                maxime modi nam officiis porro, quae, quisquam quos
-                reprehenderit velit? Natus, totam.
-              </Text>
+            <VStack spacing={{ base: 2, sm: 4 }}>
+              <Box alignContent={'left'}>
+                <Image src={user.image} alt={user.name} width={'100px'} />
+                <Text fontSize="xs">Created by: {user.name}</Text>
+                <Text
+                  color={useColorModeValue('gray.500', 'gray.400')}
+                  fontSize={'2xl'}
+                  fontWeight={'300'}
+                >
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+                  diam nonumy eirmod tempor invidunt ut labore
+                </Text>
+                <Text fontSize={'lg'}>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
+                  aliquid amet at delectus doloribus dolorum expedita hic, ipsum
+                  maxime modi nam officiis porro, quae, quisquam quos
+                  reprehenderit velit? Natus, totam.
+                </Text>
+              </Box>
             </VStack>
             <Box>
               <Text

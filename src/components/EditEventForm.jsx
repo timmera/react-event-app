@@ -29,9 +29,6 @@ export const EditEventForm = () => {
   const users = useRouteLoaderData('events').userData;
   const categories = useRouteLoaderData('editEvent').categories;
   const eventCategories = event.event.categoryIds;
-  console.log('event', event);
-  console.log('categories', categories);
-  console.log('eventCategories', eventCategories);
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const {
     handleSubmit,
@@ -46,12 +43,11 @@ export const EditEventForm = () => {
       description: event.event.description,
       image: event.event.image,
       location: event.event.location,
-      categoryIds: Number(eventCategories),
+      categoryIds: [],
     },
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     const editedEvent = {
       createdBy: data.createdBy,
       title: data.title,

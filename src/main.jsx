@@ -27,6 +27,12 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <EventsPage />,
+        loader: async () => {
+          const events = await FetchData(`/events/`);
+
+          return { events };
+        },
+        id: 'eventsPage',
       },
       {
         path: '/AddEvent',
