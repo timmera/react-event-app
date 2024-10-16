@@ -1,7 +1,8 @@
 import { useRouteLoaderData, Link } from 'react-router-dom';
 import {
   Badge,
-  Checkbox,
+  Radio,
+  RadioGroup,
   Heading,
   Box,
   Flex,
@@ -15,9 +16,8 @@ import {
   Spacer,
   Divider,
 } from '@chakra-ui/react';
-import { MdBuild, MdInfoOutline } from 'react-icons/md';
+import { MdInfoOutline } from 'react-icons/md';
 import { useEffect, useState } from 'react';
-import { DeleteEvent } from '../components/DeleteEvent';
 import { Search } from '../components/Search';
 import '../styles/index.css';
 
@@ -54,26 +54,44 @@ export const EventsPage = () => {
   });
 
   return (
-    <Box>
+    <Box minH={'100vh'}>
       <Flex gap="4">
-        <Box className="categoryFilter">
+        <Box
+          width={{ base: '100px', md: '200px', lg: '500px' }}
+          ml={{ base: '10px', md: '30px', lg: '40px' }}
+          mb={{ base: '20px', md: '30px', lg: '40px' }}
+          flexDirection={{ base: 'column', sm: 'row', md: 'row' }}
+        >
           <Text>Filter by category:</Text>
-          {categories.map((category) => (
-            <Checkbox
-              key={category.id}
-              name={category.id}
-              value={category.id}
-              borderColor={'black'}
-              isChecked={selectedCategory === category.id}
-              onChange={handleCategoryChange}
-            >
-              {category.name}
-            </Checkbox>
-          ))}
+          <RadioGroup value={selectedCategory}>
+            <Stack>
+              {categories.map((category) => (
+                <Radio
+                  key={category.id}
+                  name={category.id}
+                  onChange={handleCategoryChange}
+                  value={category.id}
+                  isChecked={selectedCategory === category.id}
+                  borderColor={'black'}
+                  colorScheme="green"
+                >
+                  {category.name}
+                </Radio>
+              ))}
+              <Button
+                onClick={() => {
+                  setSelectedCategory(null);
+                }}
+                width={{ base: '100px' }}
+              >
+                Reset filter
+              </Button>
+            </Stack>
+          </RadioGroup>
         </Box>
         <Spacer />
-        <Box className="matchedEvents">
-          <Box className="searchBox">
+        <Box>
+          <Box mr={{ base: '20px', md: '30px', lg: '40px' }}>
             <Search onChange={handleSearch} />
           </Box>
           {matchedEvents.length > 1 ? (
@@ -98,6 +116,7 @@ export const EventsPage = () => {
         alignContent={'center'}
         alignItems={'center'}
         direction="row"
+        mb={'20px'}
       >
         {matchedEvents.map((event) => {
           const eventCreator = userData?.find(
@@ -105,7 +124,6 @@ export const EventsPage = () => {
           )?.name;
           return (
             <Card
-              maxW="sm"
               borderRadius="md"
               key={event.id}
               sx={{
@@ -113,14 +131,16 @@ export const EventsPage = () => {
                   '0 1px 1px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.12), 0 8px 8px rgba(0,0,0,0.12), 0 16px 16px rgba(0,0,0,0.12)',
               }}
               minH={'400px'}
-              minW={'500px'}
+              width={{ base: '320px', sm: '400px', md: '500px' }}
             >
               <CardBody>
                 <Stack mt="6">
-                  <Heading fontSize="xl">{event.title}</Heading>
+                  <Link to={`events/${event.id}`}>
+                    <Heading fontSize="xl">{event.title}</Heading>
+                  </Link>
                   <Text fontSize="xs">Added by: {eventCreator}</Text>
                   <Divider />
-                  <Box direction={'row'} width={'100%'}>
+                  <Box direction={'row'}>
                     {event.categoryIds.map((categoryId) => {
                       const eventCategory = categories?.find(
                         (cat) => Number(cat.id) === categoryId
@@ -154,24 +174,26 @@ export const EventsPage = () => {
                       );
                     })}
                   </Box>
-                  <Box
-                    bgColor={'blackAlpha.200'}
-                    bgSize="cover"
-                    bgRepeat={'no-repeat'}
-                    bgImage={`url(${event.image})`}
-                    height={'250px'}
-                    className="imageBox"
-                  >
-                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
-                      {event.date}
-                    </Text>
-                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
-                      {event.location}
-                    </Text>
-                    <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
-                      {event.description}
-                    </Text>
-                  </Box>
+                  <Link to={`events/${event.id}`}>
+                    <Box
+                      bgColor={'blackAlpha.200'}
+                      bgSize="cover"
+                      bgRepeat={'no-repeat'}
+                      bgImage={`url(${event.image})`}
+                      height={'250px'}
+                      className="imageBox"
+                    >
+                      <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                        {event.date}
+                      </Text>
+                      <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                        {event.location}
+                      </Text>
+                      <Text align={'center'} backgroundColor={'whiteAlpha.600'}>
+                        {event.description}
+                      </Text>
+                    </Box>
+                  </Link>
                 </Stack>
               </CardBody>
               <Divider />
@@ -186,17 +208,6 @@ export const EventsPage = () => {
                       Details
                     </Button>
                   </Link>
-                  <Link to={`EditEvent/${event.id}`}>
-                    <Button
-                      leftIcon={<MdBuild />}
-                      colorScheme="blue"
-                      size="sm"
-                      variant="outline"
-                    >
-                      Edit
-                    </Button>
-                  </Link>
-                  <DeleteEvent event={event} />
                 </ButtonGroup>
               </CardFooter>
             </Card>

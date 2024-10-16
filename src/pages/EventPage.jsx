@@ -4,6 +4,7 @@ import { useRouteLoaderData, Link } from 'react-router-dom';
 import { MdBuild } from 'react-icons/md';
 import {
   Box,
+  ButtonGroup,
   Container,
   Stack,
   Text,
@@ -17,6 +18,7 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
+import { DeleteEvent } from '../components/DeleteEvent';
 
 export const EventPage = () => {
   const event = useRouteLoaderData('event');
@@ -115,17 +117,19 @@ export const EventPage = () => {
                 </List>
               </SimpleGrid>
             </Box>
-
-            <Link to={`/EditEvent/${event.event.id}`}>
-              <Button
-                leftIcon={<MdBuild />}
-                colorScheme="blue"
-                size="sm"
-                variant="outline"
-              >
-                Edit
-              </Button>
-            </Link>
+            <ButtonGroup gap={4}>
+              <Link to={`/EditEvent/${event.event.id}`}>
+                <Button
+                  leftIcon={<MdBuild />}
+                  colorScheme="blue"
+                  size="sm"
+                  variant="outline"
+                >
+                  Edit
+                </Button>
+              </Link>
+              <DeleteEvent event={event.event} size="sm" />
+            </ButtonGroup>
           </Stack>
         </Stack>
       </SimpleGrid>

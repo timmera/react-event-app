@@ -4,7 +4,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 export const Search = ({ changeFn, ...props }) => {
   return (
     <>
-      <Stack>
+      <Stack width={{ base: '180px', md: '300px' }}>
         <InputGroup>
           <InputLeftElement>
             <SearchIcon />

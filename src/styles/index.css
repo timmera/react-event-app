@@ -28,33 +28,6 @@ img {
   filter: saturate(40%);
 }
 
-.categoryFilter,
-.searchBox,
-.matchedEvents {
-  display: flex;
-  direction: column;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  width: 30vw;
-}
-
-.categoryFilter {
-  margin-left: 140px;
-  justify-content: space-around;
-  align-content: center;
-  border-color: black;
-}
-
-.searchBox {
-  margin-top: 20px;
-}
-
-.matchedEvents {
-  color: black;
-  margin-bottom: 20px;
-}
-
 .imageBox {
   filter: saturate(30%);
 }

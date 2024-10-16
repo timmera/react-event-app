@@ -15,7 +15,7 @@ export const ErrorBoundary = () => {
           <AlertIcon />
           <AlertTitle>Oops!</AlertTitle>
           <AlertDescription>
-            {error.status} - {error.statusText}
+            {error.status} - {error.statusText} - {error.data}
           </AlertDescription>
         </Alert>
       </div>
@@ -24,8 +24,10 @@ export const ErrorBoundary = () => {
     return (
       <Alert status="error">
         <AlertIcon />
-        <AlertTitle>Oops!</AlertTitle>
-        <AlertDescription>{error.message}</AlertDescription>
+        <AlertTitle>Oops! -</AlertTitle>
+        <AlertDescription>
+          De pagina kan niet geladen worden...
+        </AlertDescription>
       </Alert>
     );
   }

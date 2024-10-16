@@ -87,7 +87,7 @@ export const AddEventForm = () => {
       });
       onClose();
       reset();
-      navigate(`/`);
+      navigate(`/Events/${newEvent.id}`);
     } catch (error) {
       console.error('Error during creating event:', error);
     }
