@@ -17,22 +17,17 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { MdInfoOutline } from 'react-icons/md';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Search } from '../components/Search';
 import '../styles/index.css';
 
 export const EventsPage = () => {
-  const data = useRouteLoaderData('events');
+  const data = useRouteLoaderData('eventsPage');
   const categories = data.categories;
-  const [eventData, setEventData] = useState(data.eventData || []);
-  const [userData, setUserData] = useState(data.userData || []);
+  const eventData = data.events || [];
+  const userData = data.users || [];
   const [searchField, setSearchField] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-  useEffect(() => {
-    setEventData(data.eventData);
-    setUserData(data.userData);
-  }, [data]);
 
   const handleSearch = (event) => {
     setSearchField(event.target.value);
