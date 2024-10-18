@@ -1,8 +1,6 @@
 import { useRouteLoaderData, Link } from 'react-router-dom';
 import {
   Badge,
-  Radio,
-  RadioGroup,
   Heading,
   Box,
   Flex,
@@ -20,22 +18,18 @@ import { MdInfoOutline } from 'react-icons/md';
 import { useState } from 'react';
 import { Search } from '../components/Search';
 import '../styles/index.css';
+import { CategoryFilter } from '../components/CategoryFilter';
 
 export const EventsPage = () => {
   const data = useRouteLoaderData('eventsPage');
   const categories = data.categories;
   const eventData = data.events || [];
   const userData = data.users || [];
-  const [searchField, setSearchField] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchField, setSearchField] = useState('');
 
   const handleSearch = (event) => {
     setSearchField(event.target.value);
-  };
-
-  const handleCategoryChange = (event) => {
-    const { value } = event.target;
-    setSelectedCategory(value === selectedCategory ? null : value);
   };
 
   const matchedEvents = eventData.filter((event) => {
@@ -51,39 +45,10 @@ export const EventsPage = () => {
   return (
     <Box minH={'100vh'}>
       <Flex gap="4">
-        <Box
-          width={{ base: '100px', md: '200px', lg: '500px' }}
-          ml={{ base: '10px', md: '30px', lg: '40px' }}
-          mb={{ base: '20px', md: '30px', lg: '40px' }}
-          flexDirection={{ base: 'column', sm: 'row', md: 'row' }}
-        >
-          <Text>Filter by category:</Text>
-          <RadioGroup value={selectedCategory}>
-            <Stack>
-              {categories.map((category) => (
-                <Radio
-                  key={category.id}
-                  name={category.id}
-                  onChange={handleCategoryChange}
-                  value={category.id}
-                  isChecked={selectedCategory === category.id}
-                  borderColor={'black'}
-                  colorScheme="green"
-                >
-                  {category.name}
-                </Radio>
-              ))}
-              <Button
-                onClick={() => {
-                  setSelectedCategory(null);
-                }}
-                width={{ base: '100px' }}
-              >
-                Reset filter
-              </Button>
-            </Stack>
-          </RadioGroup>
-        </Box>
+        <CategoryFilter
+          selectedValue={selectedCategory}
+          setSelectedValue={setSelectedCategory}
+        />
         <Spacer />
         <Box>
           <Box mr={{ base: '20px', md: '30px', lg: '40px' }}>
