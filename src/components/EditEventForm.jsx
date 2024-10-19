@@ -76,7 +76,7 @@ export const EditEventForm = () => {
     };
 
     try {
-      await toast.promise(editEvent(), {
+      toast.promise(editEvent(), {
         success: {
           title: 'The event is changed',
           description: 'Looking good',
@@ -90,11 +90,13 @@ export const EditEventForm = () => {
           description: 'Please wait',
         },
       });
-      onClose();
-      reset();
       navigate(`/Events/${event.event.id}`);
     } catch (error) {
       console.error('Error during editing event:', error);
+    } finally {
+      reset();
+      onClose();
+      navigate(-1);
     }
   };
 

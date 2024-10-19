@@ -32,7 +32,7 @@ export const DeleteEvent = ({ event }) => {
     };
 
     try {
-      await toast.promise(deleteEvent(), {
+      toast.promise(deleteEvent(), {
         success: {
           title: 'Event deleted',
           description: `${event.title} is succesfully deleted.`,
@@ -46,11 +46,12 @@ export const DeleteEvent = ({ event }) => {
           description: `${event.title} is being deleted`,
         },
       });
+      navigate('/');
     } catch (error) {
-      console.error('An error occurred while deleting the event:', error);
+      toast({ title: 'Error', description: error.message, status: 'error' });
     } finally {
       onClose();
-      navigate(`/`);
+      navigate('/');
     }
   };
 

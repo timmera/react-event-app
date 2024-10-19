@@ -21,10 +21,8 @@ import {
 import { DeleteEvent } from '../components/DeleteEvent';
 
 export const EventPage = () => {
-  const event = useRouteLoaderData('event');
-  const categories = useRouteLoaderData('event').categories;
-  const user = useRouteLoaderData('event').user;
-  const categoryIds = event.event.categoryIds;
+  const { event, categories, user } = useRouteLoaderData('event') || {};
+  const categoryIds = event.categoryIds;
   const matchedCategories = categories.filter((category) => {
     return categoryIds.includes(Number(category.id));
   });
@@ -40,7 +38,7 @@ export const EventPage = () => {
           <Image
             rounded={'md'}
             alt={'event image'}
-            src={event.event.image}
+            src={event.image}
             fit={'cover'}
             align={'center'}
             w={'100%'}
@@ -58,14 +56,14 @@ export const EventPage = () => {
               fontWeight={600}
               fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
             >
-              {event.event.title}
+              {event.title}
             </Heading>
             <Text
               color={useColorModeValue('gray.900', 'gray.400')}
               fontWeight={300}
               fontSize={'2xl'}
             >
-              {event.event.description}
+              {event.description}
             </Text>
           </Box>
 
@@ -118,7 +116,7 @@ export const EventPage = () => {
               </SimpleGrid>
             </Box>
             <ButtonGroup gap={4}>
-              <Link to={`/EditEvent/${event.event.id}`}>
+              <Link to={`/EditEvent/${event.id}`}>
                 <Button
                   leftIcon={<MdBuild />}
                   colorScheme="blue"
@@ -128,7 +126,7 @@ export const EventPage = () => {
                   Edit
                 </Button>
               </Link>
-              <DeleteEvent event={event.event} size="sm" />
+              <DeleteEvent event={event} size="sm" />
             </ButtonGroup>
           </Stack>
         </Stack>

@@ -71,7 +71,7 @@ export const AddEventForm = () => {
     };
 
     try {
-      await toast.promise(createEvent(), {
+      toast.promise(createEvent(), {
         success: {
           title: 'The event is created',
           description: 'Looking good',
@@ -89,7 +89,7 @@ export const AddEventForm = () => {
       reset();
       navigate(`/Events/${newEvent.id}`);
     } catch (error) {
-      console.error('Error during creating event:', error);
+      toast({ error: { title: 'Error', description: error.message } });
     }
   };
 
